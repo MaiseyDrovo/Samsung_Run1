@@ -41,6 +41,7 @@ public class Main {
         Random random = new Random();
         int step = 0;
         int sizeBoard = 5;
+        Person person = new Person(sizeBoard);
 
         String[][] board = new String[sizeBoard][sizeBoard];
         for (int y = 1; y <= sizeBoard; y++) {
@@ -55,11 +56,7 @@ public class Main {
             board[random.nextInt(sizeBoard - 1)][random.nextInt(sizeBoard)] = monster;
         }
 
-        String person = "Г";
-        int personX = 1 + sizeBoard / 2;
-        int personY = 1 + sizeBoard / 2;
-        int personLive = 3;
-        board[personY - 1][personX - 1] = person;
+        board[person.personY - 1][person.personX - 1] = person.person;
 
         String castle = "\uD83C\uDFF0";
         int castleX = 1 + random.nextInt(sizeBoard);
@@ -87,39 +84,37 @@ public class Main {
         while (true) {
             outputBoard(board);
             System.out.println("Введите куда будет ходить персонаж(ход возможен только по вертикали и горизонтали на одну клетку)");
-            System.out.println("Координаты персонажа - (x: " + personX + ", y: " + personY + ")");
+            System.out.println("Координаты персонажа - (x: " + person.personX + ", y: " + person.personY + ")");
             int x = scanner.nextInt();
             int y = scanner.nextInt();
-            if (x != personX && y != personY) {
-                System.out.println("Неккоректный ход");
-            } else if (Math.abs(x - personX) == 1 || Math.abs(y - personY) == 1) {
+            if (person.moveCorrect(x, y)) {
                 if (board[y - 1][x - 1].equals("  ")) {
-                    board[personY - 1][personX - 1] = "  ";
-                    personX = x;
-                    personY = y;
-                    board[personY - 1][personX - 1] = person;
+                    board[person.personY - 1][person.personX - 1] = "  ";
+                    person.move(x, y);
+                    board[person.personY - 1][person.personX - 1] = person.person;
                     step++;
-                    System.out.println("Ход корректный; Новые координаты: " + personX + ", " + personY + "\nХод номер: " + step);
-                } else if (board[(personY - 1)][personX-1].equals(castle)) {
+                    System.out.println("Ход корректный; Новые координаты: " + person.personX + ", " + person.personY + "\nХод номер: " + step);
+                } else if (board[person.personY - 1][person.personX-1].equals(castle)) {
                     System.out.println("Вы прошли игру");
                     break;
                 } else {
                     // taskMonster();
                     int key = difficultGame;
                     if (taskMonster(key)) {
-                        board[personY - 1][personX - 1] = "  ";
-                        personX = x;
-                        personY = y;
-                        board[personY - 1][personX - 1] = person;
+                        board[person.personY - 1][person.personX - 1] = "  ";
+                        person.personX = x;
+                        person.personY = y;
+                        board[person.personY - 1][person.personX - 1] = person.person;
                         step++;
                     } else {
-                        personLive--;
+                        person.personLive--;
                     }
                 }
             } else {
-                System.out.println("Координаты не изменены");
+                System.out.println("Неккоректный ход");
+                // System.out.println("Координаты не изменены");
             }
-            if (personLive <= 0) {
+            if (person.personLive <= 0) {
                 System.out.println("Закончились жизни. Итог: ");
                 break;
             }
