@@ -1,10 +1,23 @@
 import java.util.Random;
+
 public class Person {
     Random random = new Random();
-    int personX;
-    int personY;
-    String person = "\\uD83E\\uDDD9\\u200D";
-    int personLive = 3;
+    private int personX, personY;
+    private String personImage = "\\uD83E\\uDDD9\\u200D";
+    private int personLive = 3;
+
+    public int getX(){
+        return personX;
+    }
+    public int getY() {
+        return personY;
+    }
+    public int getLive() {
+        return personLive;
+    }
+    public String getImage(){
+        return personImage;
+    }
 
     void move(int personX, int personY) {
         this.personX = personX;
