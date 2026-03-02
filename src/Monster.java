@@ -3,8 +3,8 @@ import java.util.Scanner;
 
 public class Monster {
     Random random = new Random();
-    private int MonsterX, monsterY;
-    private String monsterImage = "\uD83E\uDDDF\u200D";
+    int MonsterX, monsterY;
+    String monsterImage = "\uD83E\uDDDF\u200D";
 
     Monster(int sizeBoard){
         monsterY = random.nextInt(sizeBoard - 1);
@@ -27,7 +27,7 @@ public class Monster {
         return personY == monsterY && personX == MonsterX;
     }
 
-    
+
     public boolean taskMonster(int difficultGame) {
         if (difficultGame == 1) {
             Scanner scanner = new Scanner(System.in);
