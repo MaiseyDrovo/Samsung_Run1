@@ -15,6 +15,9 @@ public class Main {
         }
         System.out.println(wall);
     }
+
+
+
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         Random random = new Random();
@@ -22,6 +25,7 @@ public class Main {
         int sizeBoard = 5;
         Person person = new Person(sizeBoard);
         Monster monster = new Monster(sizeBoard);
+        monster = new BigMonster(sizeBoard);
 
         String[][] board = new String[sizeBoard][sizeBoard];
         for (int y = 1; y <= sizeBoard; y++) {
@@ -30,9 +34,22 @@ public class Main {
             }
         }
 
-        int count_monster = sizeBoard * sizeBoard - sizeBoard - 1;
+//        int count_monster = sizeBoard * sizeBoard - sizeBoard - 1;
+//        for (int i = 0; i <= count_monster; i++) {
+//            board[random.nextInt(sizeBoard - 1)][random.nextInt(sizeBoard)] = monster.getImage();
+//        }
+        Monster[] arrMonster = new Monster[countMonster + 1];
+        Monster test;
         for (int i = 0; i <= count_monster; i++) {
-            board[random.nextInt(sizeBoard - 1)][random.nextInt(sizeBoard)] = monster.getImage();
+            if (random.nextBoolean()) {
+                test = new Monster(sizeBoard);
+            } else {
+                test = new BigMonster(sizeBoard);
+            }
+            if (board[test.getY()][test.getX()].equals("  ")) {
+                board[test.getY()][test.getX()] = test.getImage();
+                arrMonster[i] = test;
+            }
         }
 
         board[person.getY() - 1][person.getX() - 1] = person.getImage();
@@ -46,10 +63,8 @@ public class Main {
 
         System.out.println("Готов начать?");
         String answer = scanner.nextLine();
-        System.out.println(answer);
         switch (answer) {
             case "да" ->  {
-            // case "??" -> {
                 System.out.println("Начинаем играть");
                 System.out.println("Выбери сложность игры(от 1 до 5):");
                 int difficultGame = scanner.nextInt();
@@ -70,39 +85,30 @@ public class Main {
                             board[person.getY() - 1][person.getX() - 1] = person.getImage();
                             step++;
                             System.out.println("Ход корректный; Новые координаты: " + person.getX() + ", " + person.getY() + "\nХод номер: " + step);
-                        } else if (board[person.getY() - 1][person.getX()-1].equals(castle)) {
+                        } else if (board[y - 1][x - 1].equals(castle)) {
                             System.out.println("Вы прошли игру");
                             break;
-                        } else {
-                            // if (monster.conflictPerson(x, y)) {
-                                if (monster.taskMonster(difficultGame)) {
-                                    board[person.getY() - 1][person.getX() - 1] = "  ";
-                                    person.move(x, y);
-                                    board[person.getY() - 1][person.getX() - 1] = person.getImage();
-                                    step++;
-                                } else {
-                                    person.downLive();
-                                }
-                            // }
+                        } else if (monster.conflictPerson(x, y)) {
+                            if (monster.taskMonster(difficultGame)) {
+                                board[person.getY() - 1][person.getX() - 1] = "  ";
+                                person.move(x, y);
+                                board[person.getY() - 1][person.getX() - 1] = person.getImage();
+                                step++;
+                            } else {
+                                person.downLive();
+                            }
                         }
                     } else {
-                        System.out.println("Неккоректный ход");
-                        // System.out.println("Координаты не изменены");
+                        System.out.println("Неккоректный ход, координаты не изменены");
                     }
                     if (person.getLive() <= 0) {
                         System.out.println("Закончились жизни. Итог: ");
                         break;
                     }
                 }
-                break;
             }
-            case "нет" ->  {
-                System.out.println("Жаль, приходи еще!");
-                break;
-            }
-            // default -> {
-            //     System.out.println("Чего?");
-            // }
+            case "нет" -> System.out.println("Жаль, приходи еще!");
+            default -> System.out.println("Чего?");
         }
     }
 }
