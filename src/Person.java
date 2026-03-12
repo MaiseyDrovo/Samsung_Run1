@@ -3,7 +3,7 @@ import java.util.Random;
 public class Person {
     Random random = new Random();
     private int personX, personY;
-    private String personImage = "\\uD83E\\uDDD9\\u200D";
+    String personImage = "\uD83E\uDDD9\u200D";
     private int personLive = 3;
 
     public int getX(){
@@ -19,9 +19,9 @@ public class Person {
         return personImage;
     }
 
-    void move(int personX, int personY) {
-        this.personX = personX;
-        this.personY = personY;
+    void move(int x, int y) {
+        personX = x;
+        personY = y;
     }
     public boolean moveCorrect(int personX, int personY) {
         return this.personX == personX && Math.abs(this.personY - personY) == 1 || this.personY == personY && Math.abs(this.personX - personX) == 1;
