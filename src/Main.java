@@ -19,7 +19,7 @@ public class Main {
 
 
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in, "Windows-1251");
         Random random = new Random();
         int step = 0;
         int sizeBoard = 5;
@@ -34,13 +34,10 @@ public class Main {
             }
         }
 
-//        int count_monster = sizeBoard * sizeBoard - sizeBoard - 1;
-//        for (int i = 0; i <= count_monster; i++) {
-//            board[random.nextInt(sizeBoard - 1)][random.nextInt(sizeBoard)] = monster.getImage();
-//        }
+        int countMonster = sizeBoard * sizeBoard - sizeBoard - 1;
         Monster[] arrMonster = new Monster[countMonster + 1];
         Monster test;
-        for (int i = 0; i <= count_monster; i++) {
+        for (int i = 0; i <= countMonster; i++) {
             if (random.nextBoolean()) {
                 test = new Monster(sizeBoard);
             } else {
@@ -65,10 +62,14 @@ public class Main {
         String answer = scanner.nextLine();
         switch (answer) {
             case "да" ->  {
+            // case "1" -> {
                 System.out.println("Начинаем играть");
                 System.out.println("Выбери сложность игры(от 1 до 5):");
                 int difficultGame = scanner.nextInt();
                 System.out.println("Выбранная сложность: " + difficultGame);
+                System.out.println("Введите способ перемещения ('WASD' или 'по координатам'):");
+                String moveSelect = scanner.next();
+                System.out.println("Выбранный способ перемещения: " + moveSelect);
 
 
 
@@ -76,8 +77,20 @@ public class Main {
                     outputBoard(board);
                     System.out.println("Введите куда будет ходить персонаж(ход возможен только по вертикали и горизонтали на одну клетку)");
                     System.out.println("Координаты персонажа - (x: " + person.getX() + ", y: " + person.getY() + ")");
-                    int x = scanner.nextInt();
-                    int y = scanner.nextInt();
+                    int x = person.getX();
+                    int y = person.getY();
+                    if (moveSelect.equals("WASD")) {
+                        String dirrection = scanner.nextLine();
+                        switch (dirrection) {
+                            case "w" -> y = (person.getY() - 1);
+                            case "a" -> x = (person.getX() - 1);
+                            case "s" -> y = (person.getY() + 1);
+                            case "d" -> x = (person.getX() + 1);
+                        }
+                    } else {
+                        x = scanner.nextInt();
+                        y = scanner.nextInt();
+                    }
                     if (person.moveCorrect(x, y)) {
                         if (board[y - 1][x - 1].equals("  ")) {
                             board[person.getY() - 1][person.getX() - 1] = "  ";
@@ -88,15 +101,19 @@ public class Main {
                         } else if (board[y - 1][x - 1].equals(castle)) {
                             System.out.println("Вы прошли игру");
                             break;
-                        } else if (monster.conflictPerson(x, y)) {
-                            if (monster.taskMonster(difficultGame)) {
-                                board[person.getY() - 1][person.getX() - 1] = "  ";
-                                person.move(x, y);
-                                board[person.getY() - 1][person.getX() - 1] = person.getImage();
-                                step++;
-                            } else {
-                                person.downLive();
-                            }
+                        } else {
+                            // for (Monster monster : arrMonster) {
+                                // if (monster.conflictPerson(x, y)) {
+                                    if (monster.taskMonster(difficultGame)) {
+                                        board[person.getY() - 1][person.getX() - 1] = "  ";
+                                        person.move(x, y);
+                                        board[person.getY() - 1][person.getX() - 1] = person.getImage();
+                                        step++;
+                                    } else {
+                                        person.downLive();
+                                    }
+                                // }
+                            // }
                         }
                     } else {
                         System.out.println("Неккоректный ход, координаты не изменены");
