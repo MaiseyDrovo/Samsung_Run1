@@ -23,30 +23,23 @@ public class Monster {
         return MonsterX;
     }
 
-    public boolean conflictPerson(int personX, int personY){
-        return personY == monsterY && personX == MonsterX;
+    public boolean conflictPerson(int x, int y){
+        return (((y - 1) == monsterY) && ((x - 1) == MonsterX));
     }
 
 
     public boolean taskMonster(int difficultGame) {
-        if (difficultGame == 1) {
-            Scanner scanner = new Scanner(System.in);
-            Random random = new Random();
-            int numOne = random.nextInt(300);
-            int numTwo = random.nextInt(300);
-            int trueAnswer = numOne + numTwo;
-            System.out.println("Реши пример: " + numOne + " + " + numTwo + " = ?");
-            int monsterAnswer = scanner.nextInt();
-            if (trueAnswer == monsterAnswer) {
-                System.out.println("Верно! Ты победил монстра");
-                return true;
-            }else {
-                System.out.println("Ты проиграл эту битву!");
-                return false;
-            }
-        } else {
-             
+        Scanner scanner = new Scanner(System.in);
+        int numOne = random.nextInt(100 * difficultGame), numTwo = random.nextInt(100 * difficultGame);
+        int trueAnswer = numOne + numTwo;
+        System.out.println("Реши пример: " + numOne + " + " + numTwo + " = ?");
+        int monsterAnswer = scanner.nextInt();
+        if (trueAnswer == monsterAnswer) {
+            System.out.println("Верно! Ты победил монстра");
+            return true;
+        }else {
+            System.out.println("Ты проиграл эту битву!");
+            return false;
         }
-        return false;
     }
 }
